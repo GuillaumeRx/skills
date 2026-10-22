@@ -31,7 +31,7 @@ It ignores external URLs, anchors, and code examples. No model credentials are n
 [LavaMoat allow-scripts](https://github.com/LavaMoat/LavaMoat/tree/main/packages/yarn-plugin-allow-scripts) checks lifecycle-script permissions after each install; no scripts are currently allowed.
 Inspect new scripts before changing `lavamoat.allowScripts` in `package.json`.
 
-Check [LavaMoat harden](https://github.com/LavaMoat/LavaMoat/tree/main/packages/harden) moderate defaults separately:
+CI checks [LavaMoat harden](https://github.com/LavaMoat/LavaMoat/tree/main/packages/harden) moderate defaults separately from `yarn test`. Run the same check locally:
 
 ```sh
 yarn harden check --package-manager yarn --level moderate

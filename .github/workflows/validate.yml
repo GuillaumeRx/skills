@@ -19,4 +19,6 @@ jobs:
       - run: npm install --global --ignore-scripts corepack@0.36.0
       - run: corepack enable
       - run: yarn install --immutable
+      - name: Check package-manager hardening
+        run: yarn harden check --package-manager yarn --level moderate
       - run: yarn test

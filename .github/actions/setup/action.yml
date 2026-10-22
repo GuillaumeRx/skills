@@ -1,0 +1,15 @@
+name: Setup
+description: Set up Node.js, Corepack, and Yarn dependencies.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: .nvmrc
+    - run: npm install --global --ignore-scripts corepack@0.36.0
+      shell: bash
+    - run: corepack enable
+      shell: bash
+    - run: yarn install --immutable
+      shell: bash

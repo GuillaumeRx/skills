@@ -6,13 +6,13 @@ Reusable [Agent Skills](https://agentskills.io/) for coding agents.
 
 ## Install
 
-After the setup PR merges into `main`, use [Vercel's skills CLI](https://github.com/vercel-labs/skills):
+### [skills CLI](https://github.com/vercel-labs/skills)
 
 ```sh
 yarn dlx skills add GuillaumeRx/skills --skill package-migration
 ```
 
-Choose the agent and installation scope when prompted. Preview a checkout without installing: `yarn dlx skills add . --list`.
+Choose the agent and installation scope when prompted.
 
 ## Development
 

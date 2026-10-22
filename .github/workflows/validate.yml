@@ -1,4 +1,4 @@
-name: Validate skills
+name: CI
 
 on:
   push:
@@ -9,8 +9,17 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  check:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Skills
+            command: yarn test
+          - name: Hardening
+            command: yarn harden check --package-manager yarn --level moderate
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -19,6 +28,4 @@ jobs:
       - run: npm install --global --ignore-scripts corepack@0.36.0
       - run: corepack enable
       - run: yarn install --immutable
-      - name: Check package-manager hardening
-        run: yarn harden check --package-manager yarn --level moderate
-      - run: yarn test
+      - run: ${{ matrix.command }}

@@ -45,7 +45,7 @@
 - [x] Add the README, pinned Yarn version and parser dependencies, workflow, and minimal ignores. Apply `@lavamoat/harden` moderate defaults. Set the `test` script to `node --test && node scripts/validate.mjs`. Document `yarn test` as the single verification command and state that it does not test agent behavior. Run the same command in CI after an immutable Yarn install.
 - [x] Run `yarn test`. Expect both the validator tests and validation of the repository's skill files to pass without model credentials. Verify that a temporary broken local-link fixture makes the same command fail; restore it afterward.
 - [x] Run Skills CLI discovery. Review language manually to keep Python out of the tooling.
-- [ ] Review the diff and commit the setup.
+- [x] Review the diff and commit the setup.
 
 ## Task 2: Publish for human review
 
@@ -53,7 +53,9 @@
 
 **Interfaces:** Consume the verified setup commit. Produce a public branch and draft PR.
 
-- [ ] Obtain an independent review against the approved scope.
+- [x] Obtain an independent review against the approved scope.
+- [x] Fix the entrypoint-validation bypass with regression tests. Reject directories, symlinks, and unreadable entrypoints.
+- [x] Install pinned Corepack before enabling Yarn. Verify workflow commands with a fresh Node 26 runtime.
 - [ ] Push `gr/initial-skills` to `GuillaumeRx/skills`.
 - [ ] Create a draft PR with the summary and verification evidence.
 - [ ] Confirm the public repository, PR draft state, and CI outcome.

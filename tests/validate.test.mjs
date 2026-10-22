@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { test } from 'node:test';
@@ -48,6 +48,32 @@ for (const [name, content, error] of [
     assert.match(errors.join('\n'), /skills\/example\/SKILL\.md/);
   });
 }
+
+test('rejects a directory named SKILL.md', (t) => {
+  const root = fixture(t, null);
+  mkdirSync(join(root, 'skills/example/SKILL.md'));
+  assert.match(validateRepository(root).join('\n'), /SKILL\.md.*regular file/i);
+});
+
+for (const [name, content] of [['valid content', validSkill], ['missing frontmatter', '# Example\n']]) {
+  test(`rejects a SKILL.md symlink with ${name}`, (t) => {
+    const root = fixture(t, null);
+    addFile(root, 'entrypoint.md', content);
+    symlinkSync('../../entrypoint.md', join(root, 'skills/example/SKILL.md'));
+    assert.match(validateRepository(root).join('\n'), /SKILL\.md.*regular file/i);
+  });
+}
+
+test('reports an unreadable SKILL.md', { skip: process.platform === 'win32' || process.getuid?.() === 0 }, (t) => {
+  const root = fixture(t);
+  const entrypoint = join(root, 'skills/example/SKILL.md');
+  chmodSync(entrypoint, 0);
+  try {
+    assert.match(validateRepository(root).join('\n'), /SKILL\.md.*cannot read/i);
+  } finally {
+    chmodSync(entrypoint, 0o600);
+  }
+});
 
 test('rejects a repository without skills', (t) => {
   const root = fixture(t);

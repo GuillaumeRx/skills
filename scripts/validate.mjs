@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, lstatSync, readFileSync, readdirSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { fromMarkdown } from 'mdast-util-from-markdown';
@@ -70,10 +70,23 @@ export function validateRepository(root) {
   for (const skill of skills) {
     const directory = join(skillsPath, skill.name);
     const entrypoint = join(directory, 'SKILL.md');
-    if (!existsSync(entrypoint)) errors.push(`${relative(root, entrypoint)}: Missing SKILL.md.`);
+    if (!existsSync(entrypoint)) {
+      errors.push(`${relative(root, entrypoint)}: Missing SKILL.md.`);
+      continue;
+    }
+    if (!lstatSync(entrypoint).isFile()) {
+      errors.push(`${relative(root, entrypoint)}: SKILL.md must be a regular file, not a directory or symlink.`);
+      continue;
+    }
     for (const file of markdownFiles(directory)) {
       const report = (message) => errors.push(`${relative(root, file)}: ${message}`);
-      let source = readFileSync(file, 'utf8');
+      let source;
+      try {
+        source = readFileSync(file, 'utf8');
+      } catch (error) {
+        report(`Cannot read Markdown file: ${error.message}`);
+        continue;
+      }
       if (file === entrypoint) source = checkMetadata(source, directory, report);
       checkLinks(source, file, root, report);
     }

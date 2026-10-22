@@ -27,8 +27,11 @@ yarn dlx skills add . --list
 ## Development
 
 Use Node.js LTS and the Yarn version pinned in `package.json`. The `.nvmrc` file selects the current LTS version.
+Install the pinned Corepack version first. Node.js 25 and later do not include Corepack.
+The npm command below bootstraps Corepack only; use Yarn for repository dependencies.
 
 ```sh
+npm install --global --ignore-scripts corepack@0.36.0
 corepack enable
 yarn install --immutable
 yarn test

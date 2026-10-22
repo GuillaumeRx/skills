@@ -2,3 +2,4 @@
 /.yarn/*
 !/.yarn/plugins/
 /.superpowers/
+/docs/superpowers/

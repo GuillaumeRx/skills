@@ -2,33 +2,21 @@
 
 Reusable [Agent Skills](https://agentskills.io/) for coding agents.
 
-## Available skills
-
-| Skill | Purpose |
-| --- | --- |
-| [package-migration](skills/package-migration/SKILL.md) | Migrate a MetaMask package into a Yarn monorepo while preserving Git history and human merge gates. |
+- [package-migration](skills/package-migration/SKILL.md): Migrate MetaMask packages into a Yarn monorepo, preserving Git history and human merge gates.
 
 ## Install
 
-After the setup PR merges into `main`, install the skill with [Vercel's skills CLI](https://github.com/vercel-labs/skills):
+After the setup PR merges into `main`, use [Vercel's skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
 yarn dlx skills add GuillaumeRx/skills --skill package-migration
 ```
 
-Choose the agent and installation scope when prompted.
-
-Before the merge, list the skill from this checkout without installing it:
-
-```sh
-yarn dlx skills add . --list
-```
+Choose the agent and installation scope when prompted. Preview a checkout without installing: `yarn dlx skills add . --list`.
 
 ## Development
 
-Use Node.js LTS and the Yarn version pinned in `package.json`. The `.nvmrc` file selects the current LTS version.
-Install the pinned Corepack version first. Node.js 25 and later do not include Corepack.
-The npm command below bootstraps Corepack only; use Yarn for repository dependencies.
+Use Node.js LTS (`.nvmrc`) and the Yarn version pinned in `package.json`. npm only bootstraps Corepack.
 
 ```sh
 npm install --global --ignore-scripts corepack@0.36.0
@@ -37,19 +25,13 @@ yarn install --immutable
 yarn test
 ```
 
-`yarn test` runs Node's built-in tests, then checks skill metadata and local Markdown link targets under `skills/`.
-The link check ignores external URLs, anchor fragments, and examples inside code blocks.
-These checks validate packaging, not agent behavior. No model, API key, subscription, or Python is required.
+`yarn test` runs validator tests and checks skill metadata and local Markdown links, not agent behavior.
+It ignores external URLs, anchors, and code examples. No model credentials are needed.
 
-Yarn stores its dependency cache locally and disables telemetry. Dependency lifecycle scripts are disabled by default.
-The [LavaMoat allow-scripts plugin](https://github.com/LavaMoat/LavaMoat/tree/main/packages/yarn-plugin-allow-scripts) checks the allowlist after each install.
-No dependency scripts are currently allowed. Git dependencies are blocked, and new package versions must be at least three days old.
+[LavaMoat allow-scripts](https://github.com/LavaMoat/LavaMoat/tree/main/packages/yarn-plugin-allow-scripts) checks lifecycle-script permissions after each install; no scripts are currently allowed.
+Inspect new scripts before changing `lavamoat.allowScripts` in `package.json`.
 
-When a dependency adds a lifecycle script, inspect it before changing `lavamoat.allowScripts` in `package.json`.
-Run `yarn allow-scripts auto` to record new scripts as denied, then review the changes.
-
-The package-manager settings use [LavaMoat harden](https://github.com/LavaMoat/LavaMoat/tree/main/packages/harden) moderate defaults.
-Check them separately when changing dependency configuration:
+Check [LavaMoat harden](https://github.com/LavaMoat/LavaMoat/tree/main/packages/harden) moderate defaults separately:
 
 ```sh
 yarn harden check --package-manager yarn --level moderate

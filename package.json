@@ -1,0 +1,29 @@
+{
+  "name": "guillaumerx-skills",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "yarn@4.18.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test && node scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "@lavamoat/allow-scripts": "5.1.0",
+    "@lavamoat/harden": "0.8.1",
+    "mdast-util-from-markdown": "2.1.0",
+    "yaml": "2.9.1"
+  },
+  "lavamoat": {
+    "allowScripts": {}
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "yarn",
+      "version": ">=4.16.0",
+      "onFail": "error"
+    }
+  }
+}
